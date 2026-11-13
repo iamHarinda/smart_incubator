@@ -1,0 +1,12 @@
+{
+  "name": "DHT11 WIRING ONLY (no emulation)",
+  "author": "iamHarinda",
+  "pins": [
+    "S",
+    "VCC",
+    "GND",
+    "",
+    "",
+    ""
+  ]
+}

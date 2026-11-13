@@ -1,5 +1,21 @@
 # Testing and validation
 
+## Wokwi wiring views (2026-11-13)
+
+See [WOKWI.md](WOKWI.md) for two color-coded diagrams, model limitations,
+physical wiring tables, numbered instructions, and opening/reproduction steps.
+Official Wokwi CLI 0.29.1 lint passed both files (exit 0, one DevKitC V4
+informational notice each). `tests/check_wokwi.py` passed GPIO/net, button,
+power, TOML, and asset checks for both views. Passive custom-chip WebAssembly
+assets validated and instantiated in the local WebAssembly engine.
+
+PlatformIO build SUCCESS in 2.84 seconds; all 11 existing safety checks passed.
+Firmware, PlatformIO settings, and relay/buzzer simulation defaults are unchanged.
+No simulation, rendering inspection, flashing, or physical electrical tests were
+performed. DHT11 is explicitly a wiring-only placeholder, not a DHT22 replacement
+or a functioning sensor simulation. Physical board header positions remain to
+be confirmed from its silkscreen; GPIO labels match the selected 38-pin model.
+
 ## Phase 2: initial runtime evidence (2026-11-13)
 
 **Initial USB-only firmware runtime test: PASS (user-observed evidence).**

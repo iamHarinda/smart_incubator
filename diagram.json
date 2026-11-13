@@ -1,0 +1,127 @@
+{
+  "version": 1,
+  "author": "iamHarinda",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": 30,
+      "left": -220,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-breadboard",
+      "id": "bb",
+      "top": 100,
+      "left": 30,
+      "attrs": {}
+    },
+    {
+      "type": "chip-dht11-wiring",
+      "id": "dht",
+      "top": -110,
+      "left": 130,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-text",
+      "id": "title",
+      "top": -220,
+      "left": -220,
+      "attrs": {
+        "text": "SMART INCUBATOR | DHT11 WIRING ONLY"
+      }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "legend",
+      "top": -185,
+      "left": -220,
+      "attrs": {
+        "text": "RED = 3.3V | BLACK = GND | GREEN = DHT11 S / GPIO4"
+      }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "dhtLabel",
+      "top": -65,
+      "left": 100,
+      "attrs": {
+        "text": "DHT11 WIRING PLACEHOLDER ONLY\nS = signal | VCC = physical + | GND = physical -\nNO sensor protocol or measurements are simulated"
+      }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "railLabel",
+      "top": 55,
+      "left": 80,
+      "attrs": {
+        "text": "TOP + rail = 3.3V | TOP - rail = GND\nUse LEFT rail section only; bottom/right rails unused"
+      }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "boardLabel",
+      "top": 350,
+      "left": -260,
+      "attrs": {
+        "text": "38-pin DevKitC V4 model\nMatch GPIO labels, NOT header positions\nNo 5V/VIN or output hardware connected"
+      }
+    }
+  ],
+  "connections": [
+    [
+      "esp:3V3",
+      "bb:tp.1",
+      "red",
+      [
+        "h-30",
+        "v-40"
+      ]
+    ],
+    [
+      "esp:GND.1",
+      "bb:tn.1",
+      "black",
+      [
+        "h-50",
+        "v110"
+      ]
+    ],
+    [
+      "dht:VCC",
+      "bb:tp.3",
+      "red",
+      []
+    ],
+    [
+      "dht:GND",
+      "bb:tn.3",
+      "black",
+      []
+    ],
+    [
+      "esp:4",
+      "dht:S",
+      "green",
+      [
+        "h30",
+        "v-190"
+      ]
+    ],
+    [
+      "esp:TX",
+      "$serialMonitor:RX",
+      "",
+      []
+    ],
+    [
+      "esp:RX",
+      "$serialMonitor:TX",
+      "",
+      []
+    ]
+  ],
+  "dependencies": {}
+}

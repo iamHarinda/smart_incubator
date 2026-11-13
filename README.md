@@ -20,6 +20,10 @@ egg-turning motor, or physical buzzer is activated by this firmware.
 See [HARDWARE.md](HARDWARE.md), [WIRING.md](WIRING.md), [SAFETY.md](SAFETY.md),
 [TESTING.md](TESTING.md), and [ROADMAP.md](ROADMAP.md) before connecting hardware.
 
+Color-coded Wokwi wiring views and beginner breadboard instructions are in
+[WOKWI.md](WOKWI.md). The DHT11 part is a clearly labeled wiring-only placeholder;
+it does not emulate sensor readings, and no DHT22 is substituted.
+
 ## Build
 
 1. Install Visual Studio Code, then open **Extensions** and install **PlatformIO IDE**

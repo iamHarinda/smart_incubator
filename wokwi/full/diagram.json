@@ -1,0 +1,359 @@
+{
+  "version": 1,
+  "author": "iamHarinda",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": 30,
+      "left": -220,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-breadboard",
+      "id": "bb",
+      "top": 100,
+      "left": 30,
+      "attrs": {}
+    },
+    {
+      "type": "chip-dht11-wiring",
+      "id": "dht",
+      "top": -110,
+      "left": 130,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-text",
+      "id": "title",
+      "top": -220,
+      "left": -220,
+      "attrs": {
+        "text": "SMART INCUBATOR | OLED + 5 BUTTONS"
+      }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "legend",
+      "top": -185,
+      "left": -220,
+      "attrs": {
+        "text": "RED = 3.3V | BLACK = GND | GREEN = DHT11 S / GPIO4"
+      }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "dhtLabel",
+      "top": -65,
+      "left": 100,
+      "attrs": {
+        "text": "DHT11 WIRING PLACEHOLDER ONLY\nS = signal | VCC = physical + | GND = physical -\nNO sensor protocol or measurements are simulated"
+      }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "railLabel",
+      "top": 55,
+      "left": 80,
+      "attrs": {
+        "text": "TOP + rail = 3.3V | TOP - rail = GND\nUse LEFT rail section only; bottom/right rails unused"
+      }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "boardLabel",
+      "top": 350,
+      "left": -260,
+      "attrs": {
+        "text": "38-pin DevKitC V4 model\nMatch GPIO labels, NOT header positions\nNo 5V/VIN or output hardware connected"
+      }
+    },
+    {
+      "type": "board-ssd1306",
+      "id": "oled",
+      "top": -130,
+      "left": 510,
+      "attrs": {
+        "i2cAddress": "0x3c"
+      }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "oledLabel",
+      "top": -20,
+      "left": 490,
+      "attrs": {
+        "text": "OLED 128x64 SSD1306 @ 0x3C\nBLUE SDA = GPIO21 | YELLOW SCL = GPIO22\nVCC = 3.3V | GND = ground"
+      }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "menu",
+      "top": 410,
+      "left": 60,
+      "attrs": {
+        "color": "orange",
+        "label": "MENU",
+        "xray": "1"
+      }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "menuLabel",
+      "top": 485,
+      "left": 50,
+      "attrs": {
+        "text": "MENU GPIO18\n1.l = signal\n2.l = GND"
+      }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "up",
+      "top": 410,
+      "left": 195,
+      "attrs": {
+        "color": "purple",
+        "label": "UP",
+        "xray": "1"
+      }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "upLabel",
+      "top": 485,
+      "left": 185,
+      "attrs": {
+        "text": "UP GPIO19\n1.l = signal\n2.l = GND"
+      }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "down",
+      "top": 410,
+      "left": 330,
+      "attrs": {
+        "color": "cyan",
+        "label": "DOWN",
+        "xray": "1"
+      }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "downLabel",
+      "top": 485,
+      "left": 320,
+      "attrs": {
+        "text": "DOWN GPIO23\n1.l = signal\n2.l = GND"
+      }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "ok",
+      "top": 410,
+      "left": 465,
+      "attrs": {
+        "color": "magenta",
+        "label": "OK",
+        "xray": "1"
+      }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "okLabel",
+      "top": 485,
+      "left": 455,
+      "attrs": {
+        "text": "OK GPIO16\n1.l = signal\n2.l = GND"
+      }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "turn",
+      "top": 410,
+      "left": 600,
+      "attrs": {
+        "color": "brown",
+        "label": "TURN",
+        "xray": "1"
+      }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "turnLabel",
+      "top": 485,
+      "left": 590,
+      "attrs": {
+        "text": "TURN GPIO17\n1.l = signal\n2.l = GND"
+      }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "buttonsNote",
+      "top": 560,
+      "left": 60,
+      "attrs": {
+        "text": "Buttons: INPUT_PULLUP, pressed = LOW\nContacts 1 and 2 must differ; never connect a button to 3.3V\nTURN remains simulated; no motor is present"
+      }
+    }
+  ],
+  "connections": [
+    [
+      "esp:3V3",
+      "bb:tp.1",
+      "red",
+      [
+        "h-30",
+        "v-40"
+      ]
+    ],
+    [
+      "esp:GND.1",
+      "bb:tn.1",
+      "black",
+      [
+        "h-50",
+        "v110"
+      ]
+    ],
+    [
+      "dht:VCC",
+      "bb:tp.3",
+      "red",
+      []
+    ],
+    [
+      "dht:GND",
+      "bb:tn.3",
+      "black",
+      []
+    ],
+    [
+      "esp:4",
+      "dht:S",
+      "green",
+      [
+        "h30",
+        "v-190"
+      ]
+    ],
+    [
+      "esp:TX",
+      "$serialMonitor:RX",
+      "",
+      []
+    ],
+    [
+      "esp:RX",
+      "$serialMonitor:TX",
+      "",
+      []
+    ],
+    [
+      "oled:VCC",
+      "bb:tp.6",
+      "red",
+      []
+    ],
+    [
+      "oled:GND",
+      "bb:tn.6",
+      "black",
+      []
+    ],
+    [
+      "esp:21",
+      "oled:SDA",
+      "blue",
+      [
+        "h50",
+        "v-160"
+      ]
+    ],
+    [
+      "esp:22",
+      "oled:SCL",
+      "yellow",
+      [
+        "h70",
+        "v-180"
+      ]
+    ],
+    [
+      "esp:18",
+      "menu:1.l",
+      "orange",
+      [
+        "h90",
+        "v180"
+      ]
+    ],
+    [
+      "menu:2.l",
+      "bb:tn.8",
+      "black",
+      []
+    ],
+    [
+      "esp:19",
+      "up:1.l",
+      "purple",
+      [
+        "h110",
+        "v195"
+      ]
+    ],
+    [
+      "up:2.l",
+      "bb:tn.9",
+      "black",
+      []
+    ],
+    [
+      "esp:23",
+      "down:1.l",
+      "cyan",
+      [
+        "h130",
+        "v210"
+      ]
+    ],
+    [
+      "down:2.l",
+      "bb:tn.10",
+      "black",
+      []
+    ],
+    [
+      "esp:16",
+      "ok:1.l",
+      "magenta",
+      [
+        "h150",
+        "v225"
+      ]
+    ],
+    [
+      "ok:2.l",
+      "bb:tn.11",
+      "black",
+      []
+    ],
+    [
+      "esp:17",
+      "turn:1.l",
+      "brown",
+      [
+        "h170",
+        "v240"
+      ]
+    ],
+    [
+      "turn:2.l",
+      "bb:tn.12",
+      "black",
+      []
+    ]
+  ],
+  "dependencies": {}
+}
