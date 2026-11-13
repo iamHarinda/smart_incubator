@@ -1,5 +1,112 @@
 # Testing and validation
 
+## Phase 2: initial runtime evidence (2026-11-13)
+
+**Initial USB-only firmware runtime test: PASS (user-observed evidence).**
+The user confirmed that only USB is connected to the ESP32-WROOM-32. OLED,
+DHT11, and buttons are not connected. Relay module, buzzer, heater, humidifier,
+motor, and all mains-powered loads are disconnected.
+
+The user reports repeated output in Serial Monitor at 115200 baud:
+
+```text
+[sensor] ERROR: disconnected or invalid DHT11 reading
+```
+
+This demonstrates execution of the application's sensor polling/error-reporting
+path and serial output. It is expected with the DHT11 disconnected and is not
+evidence of a firmware defect. Timing was not measured; startup output, continuous
+uptime, and the complete alert sequence were not supplied. This is a limited
+initial runtime pass, not validation of the full application or sensors.
+
+| Check | Evidence/status |
+|---|---|
+| USB-only runtime and serial output | User confirmed the repeated message above |
+| Sensor-disconnected reporting | Observed by user; expected for this setup |
+| Startup banner and initialization order | Pending startup capture |
+| DHT11 measurements and recovery | Not tested; sensor disconnected |
+| OLED startup/live/error screens | Not tested; display disconnected |
+| Buttons and Preferences across power cycles | Not tested |
+| Wi-Fi/dashboard and time synchronization | Not tested |
+| Relay/buzzer simulation defaults | Source checks; physical outputs not tested |
+
+Documentation validation: PlatformIO build SUCCESS in 2.84 seconds; all 11
+existing static safety checks passed. RAM 33,944 bytes (10.4%), flash 608,730
+bytes (46.4%). Only documentation changed; firmware and safety defaults were
+not modified, and no flash/reset/serial-port operation was performed by the agent.
+
+### Safe serial procedure for the next bench session
+
+1. Retain the confirmed USB-only baseline and leave all output hardware and loads
+   disconnected. Do not flash, erase, or change firmware for these tests.
+2. Close other serial tools. Confirm the current ESP32 port using
+   `platformio device list`; COM5 was previously identified as the CH340 bridge.
+3. From the workspace, open a 115200 baud, 8-N-1 monitor with no flow control:
+
+   ```powershell
+   & "$env:USERPROFILE\.platformio\penv\Scripts\platformio.exe" device monitor --port COM5 --baud 115200 --dtr 0 --rts 0
+   ```
+
+   DTR/RTS are requested inactive to avoid intentional auto-reset; USB driver
+   transitions can still reset some boards when opening the port. Do not use
+   monitor reset commands or press EN/BOOT automatically. If startup capture is
+   needed, obtain the user's agreement before a manual reset/power cycle. An
+   already-running board may emit only periodic readings/errors.
+4. Capture 30-60 seconds, keeping logs local (for example `runtime.log`, ignored
+   by git). Record connected hardware and visible screen behavior. Redact network
+   identifiers before sharing. Exit with Ctrl+C; never run upload as a test step.
+5. Compare with the expected messages below. Record only what was actually seen.
+   Repeated reboot banners, brownout/panic output, or stalled polling need review.
+
+Expected messages from source review, **not captured startup evidence**:
+
+- Banner: `Smart Incubator v1.0 - monitoring prototype`, followed by the safety
+  notice that heater, humidifier, and physical buzzer outputs are disabled.
+- `[settings] Preferences loaded`, or an explicit storage error/defaults warning.
+  A loaded message alone does not prove persistence across power cycles.
+- `[sensor] DHT11 driver initialized` means the driver was started, not that a
+  sensor is present. The disconnected message is expected about every two seconds
+  with this USB-only setup. The DHT protocol transaction itself is synchronous.
+- Button initialization and relay/buzzer simulation notices should follow.
+- The installed SSD1306 library's `begin()` does not verify I2C acknowledgement.
+  Firmware has no display-success serial message. Its `SSD1306 not detected`
+  error text is not a reliable missing-display diagnostic; absence of that error
+  does not prove display presence. Confirm OLED rendering visually. Improving
+  display probing/logging is future firmware work requiring user approval.
+- With driver initialization completed but invalid sensor readings, the software
+  alert is `invalid reading: ACTIVE (buzzer simulated)`. It logs on state changes,
+  not every poll. A disconnected DHT11 is not separately identified electrically.
+- `[wifi] disabled: ...` is expected without credentials. Neither offline operation
+  nor a sensor warning should enable physical outputs.
+
+### Next hardware phase: OLED, then DHT11
+
+These are **pending tests**, not completed hardware validation. Use the exact
+connection table and diagram in [WIRING.md](WIRING.md). Disconnect USB before
+every wiring change; do not move powered breadboard leads.
+
+1. **OLED only:** verify module pin labels and 3.3 V compatibility before wiring
+   VCC to 3V3, GND to GND, SDA to GPIO21, SCL to GPIO22. Reconnect USB and observe
+   the startup screen, then sensor-error placeholders (DHT11 still absent).
+   Record whether text is legible and stable. The configured driver is SSD1306,
+   128x64, address 0x3C; controller and actual address remain unverified. If blank,
+   power down and check wiring/controller/address; stop before any firmware change
+   or diagnostic-scanner upload. See HARDWARE.md for SH1106 considerations.
+2. **Add DHT11:** with USB removed, verify the module's labeled VCC/DATA/GND pins,
+   3.3 V operation, and onboard DATA pull-up to 3.3 V. Connect VCC to 3V3, GND to
+   GND, DATA to GPIO4. Do not assume pin order or use a 5 V data pull-up. If the
+   module lacks a suitable pull-up, stop to identify a suitable available resistor
+   before continuing. Reconnect and allow several polling intervals to settle.
+3. Capture at least 30 seconds of finite temperature/humidity values and compare
+   them to the OLED readings. Confirm the invalid-reading alert clears after valid
+   samples. This validates basic reporting only, not sensor accuracy/calibration.
+4. **Failure/recovery:** power down, disconnect the DHT11, restart, and confirm
+   repeated sensor errors plus OLED error placeholders. Power down again, restore
+   wiring, and verify readings recover. Keep all relay/buzzer/load hardware absent.
+5. Leave buttons disconnected during these first tests. Button navigation,
+   persistence, Wi-Fi loss/recovery, and calibrated reference checks remain later
+   steps. DHT11 measurements must never be used to activate a heater.
+
 ## Physical board upload confirmed on 2026-11-13
 
 - The user confirmed a successful firmware upload to the physical ESP32 through

@@ -1,5 +1,34 @@
 # Prototype wiring
 
+## Next bench test: OLED and DHT11 only
+
+Both devices are currently disconnected; neither hardware test has passed.
+The first phase is OLED alone, then add DHT11 after removing USB power.
+Verify module labels and 3.3 V compatibility; the diagram shows signal names,
+not physical header order. Keep all relay/buzzer/motor/load connections absent.
+
+```text
+ESP32-WROOM-32                OLED (SSD1306 assumed)
+3V3 ------------------------ VCC
+GND ------------------------ GND
+GPIO21 --------------------- SDA
+GPIO22 --------------------- SCL
+
+ESP32-WROOM-32                DHT11 MODULE (verify pin labels)
+3V3 ------------------------ VCC
+GND ------------------------ GND
+GPIO4 ---------------------- DATA
+                              |
+                   module DATA pull-up to 3V3
+                   (verify present; never pull up to 5 V)
+```
+
+The two modules share the ESP32's 3V3 and GND rails. Check breadboard rail breaks
+and polarity with USB disconnected. Never infer a module's VCC/DATA/GND order
+from this drawing. If a module's voltage compatibility or pull-up is uncertain,
+stop before powering it. GPIO numbers are not development-board header numbers.
+See [TESTING.md](TESTING.md) for the observation and failure/recovery procedure.
+
 Disconnect USB power while changing breadboard wiring. Verify the ESP32 board's
 pin labels; board header positions vary. Connect all low-voltage prototype grounds
 as described below. Do not connect any mains equipment.
