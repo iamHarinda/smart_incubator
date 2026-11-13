@@ -1,0 +1,23 @@
+.pio/
+.vscode/.browse.c
+.vscode/c_cpp_properties.json
+.vscode/launch.json
+.vscode/ipch/
+include/secrets.h
+
+# Local credentials and development environments
+.env
+.env.*
+!.env.example
+*.local
+.venv/
+venv/
+.platformio/
+.vscode/settings.json
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Local diagnostic output
+*.log
